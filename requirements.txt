@@ -3,3 +3,10 @@ uvicorn[standard]>=0.22.0
 SQLAlchemy>=2.0
 asyncpg>=0.27.0
 pydantic>=2.0
+python-multipart==0.0.20
+requests>=2.28.0  # For testing
+# Heatmap generation
+numpy>=1.24.0
+matplotlib>=3.7.0
+scipy>=1.10.0
+pillow>=9.5.0
