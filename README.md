@@ -9,9 +9,9 @@
 
 > **▶ Watch the full demo on YouTube**
 >
-> [![YouTube Demo Placeholder](https://img.shields.io/badge/YouTube-Watch%20Demo-red?style=for-the-badge&logo=youtube)](https://youtube.com)
+> [![YouTube Demo Placeholder](https://img.shields.io/badge/YouTube-Watch%20Demo-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=DRvEqosXkcY)
 >
-> `[ PLACEHOLDER ]`
+> `https://www.youtube.com/watch?v=DRvEqosXkcY`
 
 ---
 
@@ -89,6 +89,8 @@ Graphical Language Server Protocol (GLSP) is an open-source framework for buildi
 
 ## Quick Start
 
+The fastest way to get running is with **Docker** (see below). For a local Python setup, follow the steps in this section.
+
 ### Prerequisites
 
 - Python 3.11+
@@ -124,6 +126,42 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 The interactive API docs are available at [http://localhost:8000/docs](http://localhost:8000/docs).
+
+
+## Run with Docker
+
+A pre-built image of the backend is published on Docker Hub:
+
+```bash
+docker pull granigd/interaction-monitoring
+```
+
+### Option A · Docker Compose (recommended)
+
+The repository includes a `docker-compose.yml` that starts the API together with a PostgreSQL database in a single command:
+
+```bash
+docker compose up -d
+```
+
+Once the containers are healthy:
+
+- API & Swagger UI → [http://localhost:8000/docs](http://localhost:8000/docs)
+- PostgreSQL → `localhost:5432` (user `monitoring`, db `interaction_monitoring`)
+
+Stop with `docker compose down`, or `docker compose down -v` to also wipe the database volume.
+
+### Option B · Standalone container
+
+If you already have a PostgreSQL instance, you can run the API container on its own:
+
+```bash
+docker run -d \
+  -p 8000:8000 \
+  -e DATABASE_URL="postgresql+asyncpg://<user>:<password>@<host>:5432/<db>" \
+  granigd/interaction-monitoring
+```
+
 
 ### 4 · (Optional) API Key
 
@@ -168,10 +206,12 @@ A brief summary of the main endpoint groups:
 
 ## Related Repositories
 
-> `[ PLACEHOLDER — links to the frontend / GLSP plugin repositories ]`
+- **[granigd/bigUML](https://github.com/granigd/bigUML)** — fork of the bigUML GLSP-based UML modeling tool, instrumented with the frontend tracking library that emits interaction events to this backend. Serves as the reference integration for the thesis.
 
 ---
 
 ## License
 
-> `[ PLACEHOLDER ]`
+This project is licensed under the **MIT License** — see the [`LICENSE`](./LICENSE) file for details.
+
+The MIT License was chosen to remain compatible with the open-source dependencies this project builds on (FastAPI, SQLAlchemy, GLSP, etc.) and to allow free use, modification, and redistribution for academic and non-academic purposes alike.

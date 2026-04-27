@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: monitoring
+      POSTGRES_PASSWORD: monitoring_pw
+      POSTGRES_DB: interaction_monitoring
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U monitoring -d interaction_monitoring"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    image: granigd/interaction-monitoring:latest   # rename to <your-dockerhub-user>/...
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://monitoring:monitoring_pw@db:5432/interaction_monitoring
+    ports:
+      - "8000:8000"
+
+volumes:
+  pgdata:

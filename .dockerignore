@@ -1,0 +1,13 @@
+__pycache__
+*.pyc
+.venv
+venv
+.env
+.git
+.gitignore
+.idea
+.vscode
+*.db
+*.sqlite
+data/
+screenshots/
